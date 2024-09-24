@@ -283,3 +283,31 @@ def selection_problem(arr: list, k: int) -> int:
         return i + 1
 
     return selection_problem_helper(arr, 0, len(arr) - 1, k - 1)
+
+
+# HW3 Problem 1: Stooge Sort
+def stooge_sort(arr: list) -> list:
+    '''
+    Given an array arr of n elements,
+    sort the array in ascending order, by stooge sort.
+    Pseudocode:
+        Stooge-Sort(A, p, r)
+            if A[p] > A[r]
+                swap A[p] and A[r]
+            if r - p + 1 > 2:
+                q = (r - p + 1) / 3
+                Stooge-Sort(A, p, r - q)
+                Stooge-Sort(A, p + q, r)
+                Stooge-Sort(A, p, r - q)
+'''
+    def stooge_sort_helper(arr, p, r):
+        if arr[p] > arr[r]:
+            arr[p], arr[r] = arr[r], arr[p]
+        if r - p + 1 > 2:
+            q = (r - p + 1) // 3
+            stooge_sort_helper(arr, p, r - q)
+            stooge_sort_helper(arr, p + q, r)
+            stooge_sort_helper(arr, p, r - q)
+
+    stooge_sort_helper(arr, 0, len(arr) - 1)
+    return arr
