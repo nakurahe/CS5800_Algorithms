@@ -85,6 +85,9 @@ Space complexity: Θ(n + k)
 
 In conclusion, counting sort is stable because it preserves the relative order of elements with equal keys by processing the input array in reverse order and using the count array to determine the positions of elements in the output array.
 
+2. **Bucket sort**
+- Time Comeplexity: Θ(n)
+
 ### Search
 **Binary Search**
 - [placeholder]
@@ -169,3 +172,14 @@ strassen_algorithm(A, B):
 **Substitution Method**  
 1. Assume T(n) <= c * G(n) where G(n) stands for some function, c and n0 are positive and this inequation is true for all n >= n0.
 2. Substitute T(n + k) in the already-given T(n) = T(n + k) + b with above inequation, as T(n) = c * G(n + k) + b <= c * G(n), then solve c, and n0 finally.
+
+Lecture notes:
+build-in sort: almost introsort
+heapsort: space complexity
+
+if it's of high frenquency, then constant factor matters.
+
+How many leaves on the tree:
+min: n!
+max: 2 ^ n  <-- just one branch.
+Could use Stirling's approximation to prove.

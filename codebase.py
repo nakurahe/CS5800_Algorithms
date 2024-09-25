@@ -285,7 +285,7 @@ def selection_problem(arr: list, k: int) -> int:
     return selection_problem_helper(arr, 0, len(arr) - 1, k - 1)
 
 
-# HW3 Problem 1: Stooge Sort
+# HW2 Problem 1: Stooge Sort
 def stooge_sort(arr: list) -> list:
     '''
     Given an array arr of n elements,
