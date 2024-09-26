@@ -1,13 +1,13 @@
 '''
     NEU Fall 2024 CS5800 Algorithm
-    This is the codebase for all homeworks, prelearning notes of this course.
+    This is the codebase for all homeworks, pre-learning notes of this course.
     Jiahuan
 '''
 import heapq
 import math
 
 
-# Week1 Prelearning Notes
+# Week1 Pre-learning Notes
 def insertion_sort_iterative(arr: list) -> list:
     '''
     Given an array arr of n elements, sort the array in ascending order.
@@ -40,7 +40,7 @@ def insertion_sort_recursive(arr: list, n: int) -> list:
     return arr
 
 
-# HW1 Problme 2: Hybrid Sorting
+# HW1 Problem 2: Hybrid Sorting
 # Used Copilot to generate the code and modified manually.
 def hybrid_sort(arr):
     '''
@@ -88,14 +88,14 @@ def hybrid_sort(arr):
 
 
 # Example usage
-print("HW1 Problme 2: Hybrid Sorting")
+print("HW1 Problem 2: Hybrid Sorting")
 arr = [-1, 1, 3, -5, 7, 9, -11, 13, 15, -17, 19, 21, -23]
 print("Sorting the array:", arr)
 sorted_arr = hybrid_sort(arr)
 print("Result:", sorted_arr)
 
 
-# HW1 Problme 3: Binary Search
+# HW1 Problem 3: Binary Search
 def guessing_number_binary_search(arr: list, target: int) -> int:
     '''
     Given a sorted array arr of n elements,
@@ -106,7 +106,7 @@ def guessing_number_binary_search(arr: list, target: int) -> int:
     count = 0
     while left_index <= right_index:
         count += 1
-        # This is more rubust than (left_index + right_index) // 2,
+        # This is more robust than (left_index + right_index) // 2,
         # which may cause overflow. That is, when left_index and right_index
         # are both very large, their sum may exceed the limit of the integer.
         mid_index = left_index + (right_index - left_index) // 2
@@ -119,7 +119,7 @@ def guessing_number_binary_search(arr: list, target: int) -> int:
     return count
 
 
-# HW1 Problme 5: Divide and Conquer: Optimal Timing in Investment
+# HW1 Problem 5: Divide and Conquer: Optimal Timing in Investment
 # Used Copilot to generate the code and modified manually.
 def maxProfit(prices):
     def maxProfitHelper(prices, left, right):
@@ -159,9 +159,9 @@ def largest_subarray(nums: list) -> list:
 
     for i in range(1, len(nums)):
         # If the current sum is less than or equal to 0,
-        # then the current subarray, no matter a new subarray or
-        # an old array appending nums[i-1], is not the optimal subarray.
-        # So we should start a new subarray from nums[i].
+        # then the current sub-array, no matter a new sub-array or
+        # an old array appending nums[i-1], is not the optimal sub-array.
+        # So we should start a new sub-array from nums[i].
         if current_sum <= 0:
             current_sum = nums[i]
             temp_start = i
@@ -186,7 +186,7 @@ print("Result:", largest_subarray(arr))
 print("The sum is:", sum(largest_subarray(arr)))
 
 
-# Week3 Prelearning Notes
+# Week3 Pre-learning Notes
 # Used Copilot to generate the code and modified manually.
 def counting_sort(arr: list) -> list:
     '''
@@ -249,7 +249,7 @@ def bucket_sort(arr: list) -> list:
 
 # Example usage
 arr = [1, 3, 5, 7, 9, 2, 4, 6, 8, 10]
-print("\nWeek3 Prelearning Notes")
+print("\nWeek3 Pre-learning Notes")
 print("Bucket Sort this array:", arr)
 arr = bucket_sort(arr)
 print("Result:", arr)
@@ -311,3 +311,32 @@ def stooge_sort(arr: list) -> list:
 
     stooge_sort_helper(arr, 0, len(arr) - 1)
     return arr
+
+
+# HW2 Problem 2: Simultaneous Maximum and Minimum
+def simultaneous_max_min(arr: list) -> tuple:
+    '''
+    Given an array arr of n elements,
+    find the maximum and minimum elements in the array.
+    '''
+    if not arr:
+        return None, None
+
+    n = len(arr)
+    if n % 2 == 0:
+        max_num = max(arr[0], arr[1])
+        min_num = min(arr[0], arr[1])
+        start_index = 2
+    else:
+        max_num = min_num = arr[0]
+        start_index = 1
+
+    for i in range(start_index, n - 1, 2):
+        if arr[i] < arr[i + 1]:
+            min_num = min(min_num, arr[i])
+            max_num = max(max_num, arr[i + 1])
+        else:
+            min_num = min(min_num, arr[i + 1])
+            max_num = max(max_num, arr[i])
+
+    return max_num, min_num

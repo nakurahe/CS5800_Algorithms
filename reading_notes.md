@@ -86,14 +86,44 @@ Space complexity: Θ(n + k)
 In conclusion, counting sort is stable because it preserves the relative order of elements with equal keys by processing the input array in reverse order and using the count array to determine the positions of elements in the output array.
 
 2. **Bucket sort**
-- Time Comeplexity: Θ(n)
-
+- Time Complexity: Θ(n)
+---
 ### Search
-**Binary Search**
+**1. Binary Search**
 - [placeholder]
 - **Recurrence**:  
 T(n) = Θ(1) if n = 1,  
 T(n) = T((n - 1) / 2) + Θ(1) if n > 1
+
+**2. Simultaneous Minimum and Maximum Searching**
+- Implementation:
+```
+def simul-min-max(arr: list) -> tuple:
+    # Handle edge case:
+    if not arr:
+        return None, None
+    
+    # If the length is even:
+    if len(arr) % 2 == 0:
+        min = min(arr[0], arr[1])
+        max = max(arr[0], arr[1])
+        start_index = 2
+    else:
+        min = max = arr[0]
+        start_index = 1
+
+    # There won't be an index problem since i increment by 2.
+    for i in range(start_index, len(arr) - 1, 2):
+        if arr[i] < arr[i + 1]:
+            min = min(min, arr[i])
+            max = max(max, arr[i + 1])
+        else:
+            min = min(min, arr[i + 1])
+            max = max(max, arr[i])
+    
+    return min, max
+```
+- Time complexity: O(n) = 3 * floor(n / 2)
 
 ### Divide-and-conquer
 **[QUICK TIP](https://atekihcan.github.io/CLRS/02/E02.03-07/)**:
