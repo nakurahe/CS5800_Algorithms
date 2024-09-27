@@ -72,6 +72,9 @@ insert is basically the same as above.
 - Iterative solution:  
 [placeholder]
 
+3. **Quick sort**
+: one list contains elements smaller than the pivot, the other list contains elements larger than the pivot.
+
 #### Non-comparison sort
 1. **Counting sort**
 - Complexity:  
