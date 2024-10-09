@@ -340,3 +340,82 @@ def simultaneous_max_min(arr: list) -> tuple:
             max_num = max(max_num, arr[i])
 
     return max_num, min_num
+
+
+# HW3 Problem 2: Fractional Knapsack Problem
+def fractional_knapsack_solution(items: list, capacity: int) -> float:
+    '''
+    Given a list of items, each item has a weight and a value,
+    and a knapsack with a capacity,
+    find the maximum total value that can be put into the knapsack.
+    '''
+    # Sort the items by the value per weight in descending order.
+    items.sort(key=lambda x: x[1] / x[0], reverse=True)
+
+    total_value = 0
+    for weight, value in items:
+        if capacity == 0:
+            break
+        # If the weight of the item is less than the capacity,
+        # put the whole item into the knapsack.
+        if weight <= capacity:
+            total_value += value
+            capacity -= weight
+        # If the weight of the item is greater than the capacity,
+        # put the fraction of the item into the knapsack.
+        else:
+            total_value += value * capacity / weight
+            break
+
+    return total_value
+
+
+# in-class exercise
+# DP: find the smallest number of coins
+def too_many_coins(coins: list, target: int) -> int:
+    '''
+    Given a list of coins and a target value,
+    find the minimum number of coins that sum up to the target value.
+    '''
+    dp = [float('inf')] * (target + 1)
+    dp[0] = 0
+
+    for i in range(1, target + 1):
+        for coin in coins:
+            if i - coin >= 0:
+                dp[i] = min(dp[i], dp[i - coin] + 1)
+
+    return dp[target] if dp[target] != float('inf') else -1
+
+
+# Recursion: find the smallest number of coins
+def too_many_coins_recursion(coins: list, target: int) -> int:
+    def too_many_coins_recursion_helper(coins, target):
+        if target == 0:
+            return 0
+        if target < 0:
+            return float('inf')
+
+        min_coins = float('inf')
+        for coin in coins:
+            min_coins = min(
+                min_coins,
+                too_many_coins_recursion_helper(coins, target - coin) + 1)
+
+        return min_coins
+
+    min_coins = too_many_coins_recursion_helper(coins, target)
+    return min_coins if min_coins != float('inf') else -1
+
+
+# Greedy: find the smallest number of coins
+def too_many_coins_greedy(coins: list, target: int) -> int:
+    coins.sort(reverse=True)
+    num_coins = 0
+
+    for coin in coins:
+        while target >= coin:
+            target -= coin
+            num_coins += 1
+
+    return num_coins if target == 0 else -1
