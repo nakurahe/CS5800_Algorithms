@@ -419,3 +419,42 @@ def too_many_coins_greedy(coins: list, target: int) -> int:
             num_coins += 1
 
     return num_coins if target == 0 else -1
+
+
+# HW3 Problem 3: Sleeping cats
+def time_to_wake_up(matrix, m, n, x, y):
+    '''
+    Given a matrix of m rows and n columns,
+    where each cell contains the status of the cat,
+    find the minimum time to wake up the cat at the cell (x, y).
+    '''
+    if matrix[x][y] != -1:
+        return 0  # The cat is already awake or the cell is empty
+
+    directions = [(0, 1), (1, 0), (0, -1), (-1, 0)]  # Right, Down, Left, Up
+    queue = []
+    visited = set()
+
+    # Initialize the queue with all awake cats
+    for i in range(m):
+        for j in range(n):
+            if matrix[i][j] == 1:
+                queue.append((i, j, 0))  # (row, col, time)
+                visited.add((i, j))
+
+    # Perform BFS
+    while queue:
+        current_row, current_col, time = queue.pop(0)
+
+        for direction in directions:
+            new_row = current_row + direction[0]
+            new_col = current_col + direction[1]
+            if (new_row in range(0, m) and new_col in range(0, n)
+                    and (new_row, new_col) not in visited
+                    and matrix[new_row][new_col] == -1):
+                if new_row == x and new_col == y:
+                    return time + 1
+                queue.append((new_row, new_col, time + 1))
+                visited.add((new_row, new_col))
+
+    return -1  # The cat at (x, y) cannot be woken up for some reason
