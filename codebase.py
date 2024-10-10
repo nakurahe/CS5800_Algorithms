@@ -5,6 +5,7 @@
 '''
 import heapq
 import math
+import collections
 
 
 # Week1 Pre-learning Notes
@@ -421,7 +422,7 @@ def too_many_coins_greedy(coins: list, target: int) -> int:
     return num_coins if target == 0 else -1
 
 
-# HW3 Problem 3: Sleeping cats
+# HW3 Problem 3: Sleeping cats (a)
 def time_to_wake_up(matrix, m, n, x, y):
     '''
     Given a matrix of m rows and n columns,
@@ -458,3 +459,99 @@ def time_to_wake_up(matrix, m, n, x, y):
                 visited.add((new_row, new_col))
 
     return -1  # The cat at (x, y) cannot be woken up for some reason
+
+
+# HW3 Problem 3: Sleeping cats (b)
+def time_to_wake_up_all(matrix):
+    '''
+    Given a matrix of m rows and n columns,
+    where each cell contains the status of the cat,
+    find the minimum time to wake up all the cats
+    '''
+    m, n = len(matrix), len(matrix[0])
+    directions = [(0, 1), (1, 0), (0, -1), (-1, 0)]
+    queue = collections.deque()
+    awake = set()
+    max_time = 0
+
+    # Initialize the queue with all awake cats
+    for i in range(m):
+        for j in range(n):
+            if matrix[i][j] == 1:
+                queue.append((i, j, 0))  # (row, col, time)
+                awake.add((i, j))
+
+    # Perform BFS
+    while queue:
+        current_row, current_col, time = queue.popleft()
+        max_time = max(max_time, time)
+
+        for direction in directions:
+            new_row = current_row + direction[0]
+            new_col = current_col + direction[1]
+            if (new_row in range(0, m) and new_col in range(0, n)
+                    and (new_row, new_col) not in awake
+                    and matrix[new_row][new_col] == -1):
+                queue.append((new_row, new_col, time + 1))
+                awake.add((new_row, new_col))
+
+    # Check if all the cats are awake
+    for row in matrix:
+        if -1 in row:
+            # There is at least one cat that cannot be woken up
+            return -1
+
+    return max_time
+
+
+# HW3 Problem 3: Sleeping cats (c)
+def track_wake_up_path(matrix, x, y):
+    '''
+    Given a matrix of m rows and n columns,
+    where each cell contains the status of the cat,
+    find the path to wake up the cat at the cell (x, y).
+    '''
+    if matrix[x][y] != -1:
+        return []  # The cat is already awake or the cell is empty
+
+    m, n = len(matrix), len(matrix[0])
+
+    directions = [(0, 1), (1, 0), (0, -1), (-1, 0)]
+    queue = collections.deque()
+    visited = set()
+    parent = {}
+
+    # Initialize the queue with all awake cats
+    for i in range(m):
+        for j in range(n):
+            if matrix[i][j] == 1:
+                queue.append((i, j))
+                visited.add((i, j))
+                parent[(i, j)] = None
+
+    # Perform BFS
+    while queue:
+        current_row, current_col = queue.popleft()
+
+        for direction in directions:
+            new_row = current_row + direction[0]
+            new_col = current_col + direction[1]
+            if (new_row in range(0, m) and new_col in range(0, n)
+                    and (new_row, new_col) not in visited
+                    and matrix[new_row][new_col] == -1):
+                queue.append((new_row, new_col))
+                visited.add((new_row, new_col))
+                parent[(new_row, new_col)] = (current_row, current_col)
+                if new_row == x and new_col == y:
+                    return construct_path(parent, (x, y))
+
+    return []  # The cat at (x, y) cannot be woken up
+
+
+def construct_path(parent, target):
+    path = []
+    current = target
+    while current is not None:
+        path.append(current)
+        current = parent[current]
+    return path[::-1]
