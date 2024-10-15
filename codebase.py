@@ -429,7 +429,8 @@ def longest_common_subsequence(arr1: list, arr2: list) -> list:
 def length_of_longest_increasing_subsequence(arr: list) -> int:
     '''
     Given an array arr of n elements,
-    find the length of the longest increasing subsequence with O(n * logn) time.
+    find the length of the longest increasing subsequence
+        with O(n * logn) time.
     '''
     def binary_search(arr, target):
         left, right = 0, len(arr) - 1
