@@ -343,34 +343,6 @@ def simultaneous_max_min(arr: list) -> tuple:
     return max_num, min_num
 
 
-# HW3 Problem 2: Fractional Knapsack Problem
-def fractional_knapsack_solution(items: list, capacity: int) -> float:
-    '''
-    Given a list of items, each item has a weight and a value,
-    and a knapsack with a capacity,
-    find the maximum total value that can be put into the knapsack.
-    '''
-    # Sort the items by the value per weight in descending order.
-    items.sort(key=lambda x: x[1] / x[0], reverse=True)
-
-    total_value = 0
-    for weight, value in items:
-        if capacity == 0:
-            break
-        # If the weight of the item is less than the capacity,
-        # put the whole item into the knapsack.
-        if weight <= capacity:
-            total_value += value
-            capacity -= weight
-        # If the weight of the item is greater than the capacity,
-        # put the fraction of the item into the knapsack.
-        else:
-            total_value += value * capacity / weight
-            break
-
-    return total_value
-
-
 # in-class exercise
 # DP: find the smallest number of coins
 def too_many_coins(coins: list, target: int) -> int:
@@ -420,6 +392,108 @@ def too_many_coins_greedy(coins: list, target: int) -> int:
             num_coins += 1
 
     return num_coins if target == 0 else -1
+
+
+# HW3 Problem 1: Longest Increasing Subsequence(c)
+def longest_common_subsequence(arr1: list, arr2: list) -> list:
+    '''
+    Given two arrays arr1 and arr2,
+    find the longest common subsequence of the two arrays.
+    '''
+    m, n = len(arr1), len(arr2)
+    dp = [[0] * (n + 1) for _ in range(m + 1)]
+
+    for i in range(1, m + 1):
+        for j in range(1, n + 1):
+            if arr1[i - 1] == arr2[j - 1]:
+                dp[i][j] = dp[i - 1][j - 1] + 1
+            else:
+                dp[i][j] = max(dp[i - 1][j], dp[i][j - 1])
+
+    i, j = m, n
+    lcs = []
+    while i > 0 and j > 0:
+        if arr1[i - 1] == arr2[j - 1]:
+            lcs.append(arr1[i - 1])
+            i -= 1
+            j -= 1
+        elif dp[i - 1][j] > dp[i][j - 1]:
+            i -= 1
+        else:
+            j -= 1
+
+    return lcs[::-1]
+
+
+# HW3 Problem 1: Longest Increasing Subsequence(d)
+def length_of_longest_increasing_subsequence(arr: list) -> int:
+    '''
+    Given an array arr of n elements,
+    find the length of the longest increasing subsequence with O(n * logn) time.
+    '''
+    def binary_search(arr, target):
+        left, right = 0, len(arr) - 1
+        while left <= right:
+            mid = left + (right - left) // 2
+            if arr[mid] == target:
+                return mid
+            elif arr[mid] < target:
+                left = mid + 1
+            else:
+                right = mid - 1
+        return left
+
+    # Initialize an empty list to store the LIS candidates
+    lis = []
+
+    for num in arr:
+        # Find the position to replace or append the current number
+        pos = binary_search(lis, num)
+
+        # If pos is equal to the length of lis, append the number
+        if pos == len(lis):
+            lis.append(num)
+        else:
+            # Otherwise, replace the element at the found position
+            lis[pos] = num
+
+    # The length of lis is the length of the longest increasing subsequence
+    return len(lis)
+
+
+# Example usage
+print("\nHW3 Problem 1: Longest Increasing Subsequence")
+arr = [2, 4, 5, 3]
+print("The length of the longest increasing subsequence in", arr)
+print("Result:", length_of_longest_increasing_subsequence(arr))
+
+
+# HW3 Problem 2: Fractional Knapsack Problem
+def fractional_knapsack_solution(items: list, capacity: int) -> float:
+    '''
+    Given a list of items, each item has a weight and a value,
+    and a knapsack with a capacity,
+    find the maximum total value that can be put into the knapsack.
+    '''
+    # Sort the items by the value per weight in descending order.
+    items.sort(key=lambda x: x[1] / x[0], reverse=True)
+
+    total_value = 0
+    for weight, value in items:
+        if capacity == 0:
+            break
+        # If the weight of the item is less than the capacity,
+        # put the whole item into the knapsack.
+        if weight <= capacity:
+            total_value += value
+            capacity -= weight
+        # If the weight of the item is greater than the capacity,
+        # put the fraction of the item into the knapsack.
+        else:
+            total_value += value * capacity / weight
+            break
+
+    return total_value
 
 
 # HW3 Problem 3: Sleeping cats (a)
