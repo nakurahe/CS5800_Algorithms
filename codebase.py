@@ -630,3 +630,80 @@ def construct_path(parent, target):
         path.append(current)
         current = parent[current]
     return path[::-1]
+
+
+# CLRS 20, 21:
+def prims_algorithm_adjacency_list(graph):
+    '''
+    Given a graph represented by an adjacency list,
+    find the minimum spanning tree using Prim's algorithm.
+    '''
+    n = len(graph)
+    parent = [-1] * n
+    key = [float('inf')] * n
+    visited = [False] * n
+    key[0] = 0
+
+    for _ in range(n):
+        u = min_key(key, visited)
+        visited[u] = True
+
+        for v, w in graph[u]:
+            if not visited[v] and w < key[v]:
+                parent[v] = u
+                key[v] = w
+
+    return parent
+
+
+def min_key(key, visited):
+    min_value = float('inf')
+    min_index = -1
+    for i in range(len(key)):
+        if not visited[i] and key[i] < min_value:
+            min_value = key[i]
+            min_index = i
+    return min_index
+
+
+def kruskals_algorithm(graph):
+    '''
+    Given a graph represented by an adjacency list,
+    find the minimum spanning tree using Kruskal's algorithm.
+    '''
+    n = len(graph)
+    parent = [i for i in range(n)]
+    rank = [0] * n
+    result = []
+
+    edges = []
+    for u in range(n):
+        for v, w in graph[u]:
+            edges.append((u, v, w))
+    edges.sort(key=lambda x: x[2])
+
+    for u, v, w in edges:
+        root_u = find(parent, u)
+        root_v = find(parent, v)
+        if root_u != root_v:
+            result.append((u, v, w))
+            union(parent, rank, root_u, root_v)
+
+    return result
+
+
+def find(parent, u):
+    if parent[u] != u:
+        parent[u] = find(parent, parent[u])
+    return parent[u]
+
+
+def union(parent, rank, u, v):
+    if rank[u] > rank[v]:
+        parent[v] = u
+    elif rank[u] < rank[v]:
+        parent[u] = v
+    else:
+        parent[v] = u
+        rank[u] += 1
+

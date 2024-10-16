@@ -216,3 +216,18 @@ How many leaves on the tree:
 min: n!
 max: 2 ^ n  <-- just one branch.
 Could use Stirling's approximation to prove.
+
+
+### Graph
+**Simple graph**
+: a graph that does not have more than one edge between any two vertices and no edge starts and ends at the same vertex.
+
+Differentiate the usage of **adjacent matrix and adjacent list** to present the graph, by calculating the sparsity and density of it.
+
+Density and sparsity also decides which algorithm to use.
+
+**Prim's Algorithm**
+- Main idea: find a vertex and contiguously grow the tree.
+- Implementations: check codebase.py
+
+**Kur?
