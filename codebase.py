@@ -707,3 +707,51 @@ def union(parent, rank, u, v):
         parent[v] = u
         rank[u] += 1
 
+
+# HW4 Question 2: Graph Design
+def can_satisfy_constraints(n, equalities, inequalities):
+    # Initialize Union-Find data structures
+    parent = [i for i in range(n)]
+    rank = [0] * n
+
+    # Helper functions for Union-Find
+    def find(x):
+        if parent[x] != x:
+            parent[x] = find(parent[x])
+        return parent[x]
+
+    def union(u, v):
+        root_u = find(u)
+        root_v = find(v)
+        if root_u != root_v:
+            if rank[root_u] > rank[root_v]:
+                parent[root_v] = root_u
+            elif rank[root_u] < rank[root_v]:
+                parent[root_u] = root_v
+            else:
+                parent[root_v] = root_u
+                rank[root_u] += 1
+
+    # Process equality constraints
+    for (xi, xj) in equalities:
+        union(xi, xj)
+
+    # Check inequality constraints
+    for (xi, xj) in inequalities:
+        if find(xi) == find(xj):
+            return False
+
+    return True
+
+
+# Example usage
+print("\nHW4 Question 2: Graph Design")
+n = 5
+equalities = [(0, 1), (1, 2)]
+inequalities = [(0, 3), (2, 4)]
+print("Can satisfy the constraints?", can_satisfy_constraints(
+    n, equalities, inequalities))
+equalities = [(0, 1), (1, 2), (2, 3), (3, 4)]
+inequalities = [(0, 4)]
+print("Can satisfy the constraints?", can_satisfy_constraints(
+    n, equalities, inequalities))
