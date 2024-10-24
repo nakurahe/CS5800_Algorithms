@@ -755,3 +755,48 @@ equalities = [(0, 1), (1, 2), (2, 3), (3, 4)]
 inequalities = [(0, 4)]
 print("Can satisfy the constraints?", can_satisfy_constraints(
     n, equalities, inequalities))
+
+
+# HW4 Question 3: Greedy Algorithm
+def greedy_min_cost(items: list, max_value: int, max_weight: int) -> int:
+    '''
+    Given a list of items, each item has a value and a weight,
+        and the maximum value one value-restricted box can hold,
+        and maximum weight one weight-restricted box can hold,
+        calculate the minimum cost to pack these items into boxes.
+        One box costs 1 dollar.
+    '''
+    number_of_items = len(items)
+    i, total_box = 0, 0
+
+    while i < number_of_items:
+        current_value_item, current_weight_item = i, i
+        current_box_value_sum, current_box_weight_sum = 0, 0
+
+        while (current_value_item < number_of_items
+               and current_box_value_sum + items[current_value_item][0] <= max_value):
+            current_box_value_sum += items[current_value_item][0]
+            current_value_item += 1
+
+        while (current_weight_item < number_of_items
+               and current_box_weight_sum + items[current_weight_item][1] <= max_weight):
+            current_box_weight_sum += items[current_weight_item][1]
+            current_weight_item += 1
+
+        if current_value_item > current_weight_item:
+            i = current_value_item
+        else:
+            i = current_weight_item
+
+        total_box += 1
+
+    return total_box
+
+
+# Example usage
+print("\nHW4 Question 3: Greedy Algorithm")
+items = [(10, 1), (20, 2), (30, 3), (40, 4), (50, 5)]
+max_value = 100
+max_weight = 10
+print("The minimum cost to pack the items into boxes:", greedy_min_cost(
+    items, max_value, max_weight))
