@@ -800,3 +800,87 @@ max_value = 100
 max_weight = 10
 print("The minimum cost to pack the items into boxes:", greedy_min_cost(
     items, max_value, max_weight))
+
+
+# Week8 in-class exercise
+def findMostShops(street_shops: list) -> list:
+    index_of_shops = []
+    n = len(street_shops)
+    i = 0
+    while i < n:
+        if street_shops[i] == 1:
+            index_of_shops.append(i)
+            i += 3
+        else:
+            i += 1
+
+    return index_of_shops
+
+
+print("\nWeek8 in-class exercise")
+street_shops = [0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 1, 0, 0, 0]
+print("The maximum number of shops:", findMostShops(street_shops))
+
+
+def findMostShopsDP(street_shops: list) -> list:
+    '''
+    Given a list of 0s and 1s, where non-0 digit represents a shop's revenue,
+    find the maximum revenue of shops that can be opened.
+    '''
+    n = len(street_shops)
+    # When n is less than 3, return the index of the shop with the maximum revenue.
+    if n < 3:
+        return street_shops.index(max(street_shops))
+
+    # When n is larger than 3, use dynamic programming to find the maximum revenue.
+    dp = [0] * n
+    dp[0] = street_shops[0]
+    dp[1] = street_shops[1]
+    dp[2] = street_shops[2] + dp[0]
+    for i in range(3, n):
+        dp[i] = max(street_shops[i] + dp[i - 3], dp[i - 1])
+
+    # Find the index of the shops with the maximum revenue.
+    index_of_shops = []
+    i = n - 1
+    while i >= 0:
+        if dp[i] == max(dp):
+            index_of_shops.append(i)
+            i -= 3
+        else:
+            i -= 1
+
+    return index_of_shops[::-1]
+
+# Example usage
+print("\nWeek8 in-class exercise")
+street_shops = [0, 11, 0, 1, 0, 5, 9, 1, 0, 100, 0, 1, 1, 0, 0, 0]
+print("The maximum number of shops:", findMostShopsDP(street_shops))
+
+
+
+
+
+
+
+
+
+
+
+# def findMostShopsDP(street_shops: list) -> list:
+#     n = len(street_shops)
+#     dp = [0] * n
+#     for i in range(n):
+#         if street_shops[i] == 1:
+#             dp[i] = 1
+#             if i - 3 >= 0:
+#                 dp[i] += dp[i - 3]
+
+#     max_shops = max(dp)
+#     index_of_shops = []
+#     for i in range(n - 1, -1, -1):
+#         if dp[i] == max_shops:
+#             index_of_shops.append(i)
+#             max_shops -= 1
+
+#     return index_of_shops[::-1]
