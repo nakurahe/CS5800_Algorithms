@@ -828,11 +828,13 @@ def findMostShopsDP(street_shops: list) -> list:
     find the maximum revenue of shops that can be opened.
     '''
     n = len(street_shops)
-    # When n is less than 3, return the index of the shop with the maximum revenue.
+    # When n is less than 3,
+    # return the index of the shop with the maximum revenue.
     if n < 3:
         return street_shops.index(max(street_shops))
 
-    # When n is larger than 3, use dynamic programming to find the maximum revenue.
+    # When n is larger than 3,
+    # use dynamic programming to find the maximum revenue.
     dp = [0] * n
     dp[0] = street_shops[0]
     dp[1] = street_shops[1]
@@ -852,35 +854,8 @@ def findMostShopsDP(street_shops: list) -> list:
 
     return index_of_shops[::-1]
 
+
 # Example usage
 print("\nWeek8 in-class exercise")
 street_shops = [0, 11, 0, 1, 0, 5, 9, 1, 0, 100, 0, 1, 1, 0, 0, 0]
 print("The maximum number of shops:", findMostShopsDP(street_shops))
-
-
-
-
-
-
-
-
-
-
-
-# def findMostShopsDP(street_shops: list) -> list:
-#     n = len(street_shops)
-#     dp = [0] * n
-#     for i in range(n):
-#         if street_shops[i] == 1:
-#             dp[i] = 1
-#             if i - 3 >= 0:
-#                 dp[i] += dp[i - 3]
-
-#     max_shops = max(dp)
-#     index_of_shops = []
-#     for i in range(n - 1, -1, -1):
-#         if dp[i] == max_shops:
-#             index_of_shops.append(i)
-#             max_shops -= 1
-
-#     return index_of_shops[::-1]
